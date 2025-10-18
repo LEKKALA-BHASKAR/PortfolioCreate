@@ -95,11 +95,13 @@ class PortfolioAPITester:
                 {
                     "position": "Senior Software Engineer",
                     "company": "TechCorp Solutions",
+                    "duration": "2020-Present",
                     "description": "Led development of microservices architecture and mentored junior developers"
                 },
                 {
                     "position": "Full Stack Developer",
                     "company": "StartupXYZ",
+                    "duration": "2018-2020",
                     "description": "Built the entire web application from scratch using React and Node.js"
                 }
             ]
