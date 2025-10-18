@@ -1,18 +1,21 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { Button } from '../components/ui/button';
 import { ArrowLeft, Download, Palette } from 'lucide-react';
-import { mockDownloadZip } from '../mock';
 import { useToast } from '../hooks/use-toast';
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API = `${BACKEND_URL}/api`;
 
 const PreviewPortfolio = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { data, template } = location.state || {};
+  const { portfolioId, data, template } = location.state || {};
   const [isDownloading, setIsDownloading] = useState(false);
 
-  if (!data) {
+  if (!data || !portfolioId) {
     navigate('/create');
     return null;
   }
@@ -20,17 +23,29 @@ const PreviewPortfolio = () => {
   const handleDownload = async () => {
     setIsDownloading(true);
     try {
-      const result = await mockDownloadZip();
-      if (result.success) {
-        toast({
-          title: 'Download Ready!',
-          description: result.message,
-        });
-      }
+      const response = await axios.get(`${API}/download-portfolio/${portfolioId}`, {
+        responseType: 'blob'
+      });
+      
+      // Create download link
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `${data.name.replace(/\s+/g, '_')}_portfolio.zip`);
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+      window.URL.revokeObjectURL(url);
+      
+      toast({
+        title: 'Download Complete!',
+        description: 'Your portfolio is ready to deploy.',
+      });
     } catch (error) {
+      console.error('Download error:', error);
       toast({
         title: 'Download Failed',
-        description: 'Please try again.',
+        description: error.response?.data?.detail || 'Please try again.',
         variant: 'destructive'
       });
     }
@@ -51,10 +66,6 @@ const PreviewPortfolio = () => {
           </Button>
           <div className="flex items-center space-x-4">
             <span className="text-sm text-gray-600">Template: {template?.name}</span>
-            <Button variant="outline">
-              <Palette className="w-4 h-4 mr-2" />
-              Customize
-            </Button>
             <Button
               onClick={handleDownload}
               disabled={isDownloading}

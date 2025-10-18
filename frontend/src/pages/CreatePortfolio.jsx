@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Textarea } from '../components/ui/textarea';
 import { Label } from '../components/ui/label';
 import { Card } from '../components/ui/card';
 import { ArrowLeft, ArrowRight, Plus, Trash2, Sparkles } from 'lucide-react';
-import { mockTemplates, mockAIEnhancement, mockGeneratePortfolio } from '../mock';
+import { mockTemplates } from '../mock';
 import { useToast } from '../hooks/use-toast';
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API = `${BACKEND_URL}/api`;
 
 const CreatePortfolio = () => {
   const navigate = useNavigate();
@@ -61,18 +65,41 @@ const CreatePortfolio = () => {
   const handleEnhance = async () => {
     setIsEnhancing(true);
     try {
-      const result = await mockAIEnhancement(formData);
-      if (result.success) {
+      const response = await axios.post(`${API}/enhance-content`, {
+        name: formData.name,
+        title: formData.title,
+        about: formData.about,
+        skills: formData.skills,
+        projects: formData.projects,
+        experience: formData.experience
+      });
+      
+      if (response.data.success) {
+        const enhanced = response.data.enhanced;
+        
+        // Update form data with enhanced content
+        setFormData(prev => ({
+          ...prev,
+          about: enhanced.about || prev.about,
+          skills: enhanced.skills || prev.skills,
+          projects: enhanced.projects || prev.projects
+        }));
+        
         toast({
           title: 'Content Enhanced!',
           description: 'AI has optimized your portfolio content.',
         });
-        setFormData(result.enhanced);
+        
+        // Show suggestions if any
+        if (enhanced.suggestions && enhanced.suggestions.length > 0) {
+          console.log('AI Suggestions:', enhanced.suggestions);
+        }
       }
     } catch (error) {
+      console.error('Enhancement error:', error);
       toast({
         title: 'Enhancement Failed',
-        description: 'Please try again.',
+        description: error.response?.data?.detail || 'Please try again.',
         variant: 'destructive'
       });
     }
@@ -88,20 +115,32 @@ const CreatePortfolio = () => {
       });
       return;
     }
+    
     setIsGenerating(true);
     try {
-      const result = await mockGeneratePortfolio(formData, selectedTemplate);
-      if (result.success) {
+      const response = await axios.post(`${API}/generate-portfolio`, {
+        data: formData,
+        template: selectedTemplate.id
+      });
+      
+      if (response.data.success) {
         toast({
           title: 'Portfolio Generated!',
-          description: result.message,
+          description: response.data.message,
         });
-        navigate('/preview', { state: { data: formData, template: selectedTemplate } });
+        navigate('/preview', { 
+          state: { 
+            portfolioId: response.data.portfolioId,
+            data: formData, 
+            template: selectedTemplate 
+          } 
+        });
       }
     } catch (error) {
+      console.error('Generation error:', error);
       toast({
         title: 'Generation Failed',
-        description: 'Please try again.',
+        description: error.response?.data?.detail || 'Please try again.',
         variant: 'destructive'
       });
     }
