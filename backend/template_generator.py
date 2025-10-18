@@ -665,11 +665,549 @@ class TemplateGenerator:
     
     def _generate_creative_bold(self, p: Dict) -> str:
         """Generate creative bold template with vibrant colors"""
-        # Similar structure but with different styling
-        return self._generate_minimal_professional(p).replace(
-            'background: #000;\n            color: #fff;',
-            'background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n            color: #fff;'
-        )
+        skills_html = ''.join([f'<div class="skill-tag">{s["name"]}</div>' for s in p['skills']])
+        
+        projects_html = ''.join([
+            f'''
+            <div class="project-card">
+                <div class="project-glow"></div>
+                <h3>{proj["title"]}</h3>
+                <p>{proj["description"]}</p>
+                {f'<div class="tech-tags">{", ".join([f"<span>{t.strip()}</span>" for t in proj["technologies"].split(",")])}</div>' if proj.get('technologies') else ''}
+                {f'<a href="{proj["link"]}" target="_blank" class="project-link">Explore →</a>' if proj.get('link') else ''}
+            </div>
+            '''
+            for proj in p['projects']
+        ])
+        
+        experience_html = ''.join([
+            f'''
+            <div class="exp-card">
+                <span class="duration">{exp["duration"]}</span>
+                <h3>{exp["position"]}</h3>
+                <h4>{exp["company"]}</h4>
+                <p>{exp["description"]}</p>
+            </div>
+            '''
+            for exp in p['experience']
+        ])
+        
+        education_html = ''.join([
+            f'''
+            <div class="edu-card">
+                <div class="edu-glow"></div>
+                <h3>{edu["degree"]}</h3>
+                <h4>{edu["institution"]}</h4>
+                <span class="year">{edu["year"]}</span>
+                {f'<p>{edu["description"]}</p>' if edu.get('description') else ''}
+            </div>
+            '''
+            for edu in p['education']
+        ])
+        
+        return f'''<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{p['name']} - Creative Portfolio</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+        
+        * {{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }}
+        
+        html {{
+            scroll-behavior: smooth;
+        }}
+        
+        body {{
+            font-family: 'Poppins', sans-serif;
+            background: #050505;
+            color: #fff;
+            overflow-x: hidden;
+        }}
+        
+        /* Hero Section */
+        .hero {{
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            position: relative;
+            overflow: hidden;
+        }}
+        
+        .hero::before {{
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: moveGrid 20s linear infinite;
+        }}
+        
+        @keyframes moveGrid {{
+            0% {{ transform: translate(0, 0); }}
+            100% {{ transform: translate(50px, 50px); }}
+        }}
+        
+        .hero-content {{
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 3rem;
+        }}
+        
+        .hero h1 {{
+            font-size: 6rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 40px rgba(0,0,0,0.3);
+            animation: glowText 3s ease-in-out infinite;
+        }}
+        
+        @keyframes glowText {{
+            0%, 100% {{ text-shadow: 0 0 40px rgba(0,0,0,0.3); }}
+            50% {{ text-shadow: 0 0 60px rgba(255,255,255,0.5); }}
+        }}
+        
+        .hero .title {{
+            font-size: 2rem;
+            font-weight: 500;
+            opacity: 0.95;
+            margin-bottom: 2rem;
+        }}
+        
+        .hero .contact {{
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            font-size: 1.1rem;
+        }}
+        
+        .hero .contact a {{
+            color: #fff;
+            text-decoration: none;
+            padding: 0.8rem 2rem;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }}
+        
+        .hero .contact a:hover {{
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-3px);
+        }}
+        
+        /* Sections */
+        section {{
+            padding: 8rem 3rem;
+            position: relative;
+        }}
+        
+        .container {{
+            max-width: 1400px;
+            margin: 0 auto;
+        }}
+        
+        section h2 {{
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 4rem;
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }}
+        
+        /* About Section */
+        #about {{
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d1b69 100%);
+        }}
+        
+        #about p {{
+            font-size: 1.5rem;
+            line-height: 1.9;
+            color: rgba(255,255,255,0.85);
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }}
+        
+        /* Skills Section */
+        #skills {{
+            background: #050505;
+        }}
+        
+        .skills-grid {{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }}
+        
+        .skill-tag {{
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(240, 147, 251, 0.2) 100%);
+            border: 2px solid transparent;
+            border-radius: 20px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }}
+        
+        .skill-tag::before {{
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+        }}
+        
+        .skill-tag:hover::before {{
+            left: 100%;
+        }}
+        
+        .skill-tag:hover {{
+            transform: translateY(-10px) scale(1.05);
+            border-color: #f093fb;
+            box-shadow: 0 20px 60px rgba(240, 147, 251, 0.4);
+        }}
+        
+        /* Projects Section */
+        #projects {{
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+        }}
+        
+        .projects-grid {{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+        }}
+        
+        .project-card {{
+            background: rgba(255,255,255,0.05);
+            border-radius: 25px;
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }}
+        
+        .project-glow {{
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(102, 126, 234, 0.4) 0%, transparent 70%);
+            transition: all 0.4s ease;
+        }}
+        
+        .project-card:hover .project-glow {{
+            top: -30%;
+            right: -30%;
+            width: 300px;
+            height: 300px;
+        }}
+        
+        .project-card:hover {{
+            transform: translateY(-15px);
+            box-shadow: 0 30px 80px rgba(102, 126, 234, 0.3);
+        }}
+        
+        .project-card h3 {{
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }}
+        
+        .project-card p {{
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            position: relative;
+            z-index: 1;
+        }}
+        
+        .tech-tags {{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }}
+        
+        .tech-tags span {{
+            padding: 0.6rem 1.2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }}
+        
+        .project-link {{
+            display: inline-block;
+            color: #f093fb;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }}
+        
+        .project-link:hover {{
+            transform: translateX(10px);
+        }}
+        
+        /* Experience Section */
+        #experience {{
+            background: #050505;
+        }}
+        
+        .exp-grid {{
+            display: grid;
+            gap: 2.5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }}
+        
+        .exp-card {{
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(240, 147, 251, 0.1) 100%);
+            border-left: 5px solid #667eea;
+            border-radius: 20px;
+            padding: 3rem;
+            transition: all 0.3s ease;
+        }}
+        
+        .exp-card:hover {{
+            transform: translateX(15px);
+            border-left-color: #f093fb;
+        }}
+        
+        .exp-card .duration {{
+            display: inline-block;
+            padding: 0.6rem 1.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }}
+        
+        .exp-card h3 {{
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }}
+        
+        .exp-card h4 {{
+            font-size: 1.3rem;
+            color: rgba(255,255,255,0.7);
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+        }}
+        
+        .exp-card p {{
+            color: rgba(255,255,255,0.8);
+            line-height: 1.8;
+        }}
+        
+        /* Education Section */
+        #education {{
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d1b69 100%);
+        }}
+        
+        .edu-grid {{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+        }}
+        
+        .edu-card {{
+            background: rgba(255,255,255,0.05);
+            border-radius: 25px;
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }}
+        
+        .edu-glow {{
+            position: absolute;
+            bottom: -50%;
+            left: -50%;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(240, 147, 251, 0.3) 0%, transparent 70%);
+            transition: all 0.4s ease;
+        }}
+        
+        .edu-card:hover .edu-glow {{
+            bottom: -30%;
+            left: -30%;
+            width: 300px;
+            height: 300px;
+        }}
+        
+        .edu-card:hover {{
+            transform: translateY(-10px);
+            box-shadow: 0 25px 70px rgba(240, 147, 251, 0.3);
+        }}
+        
+        .edu-card h3 {{
+            font-size: 1.8rem;
+            margin-bottom: 0.8rem;
+            position: relative;
+            z-index: 1;
+        }}
+        
+        .edu-card h4 {{
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.7);
+            font-weight: 500;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }}
+        
+        .edu-card .year {{
+            display: inline-block;
+            padding: 0.5rem 1.2rem;
+            background: linear-gradient(135deg, #667eea 0%, #f093fb 100%);
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }}
+        
+        .edu-card p {{
+            color: rgba(255,255,255,0.75);
+            line-height: 1.7;
+            position: relative;
+            z-index: 1;
+        }}
+        
+        /* Footer */
+        footer {{
+            background: #000;
+            text-align: center;
+            padding: 4rem 2rem;
+        }}
+        
+        footer p {{
+            color: rgba(255,255,255,0.6);
+            font-size: 1rem;
+        }}
+        
+        /* Responsive */
+        @media (max-width: 768px) {{
+            .hero h1 {{
+                font-size: 3.5rem;
+            }}
+            
+            section {{
+                padding: 5rem 1.5rem;
+            }}
+            
+            section h2 {{
+                font-size: 2.5rem;
+            }}
+            
+            .projects-grid,
+            .edu-grid {{
+                grid-template-columns: 1fr;
+            }}
+        }}
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>{p['name']}</h1>
+            <p class="title">{p['title']}</p>
+            <div class="contact">
+                <a href="mailto:{p['email']}">Get in Touch</a>
+                {f'<a href="tel:{p["phone"]}">Call Me</a>' if p.get('phone') else ''}
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="container">
+            <h2>About Me</h2>
+            <p>{p['about']}</p>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills">
+        <div class="container">
+            <h2>Skills</h2>
+            <div class="skills-grid">
+                {skills_html}
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects">
+        <div class="container">
+            <h2>Projects</h2>
+            <div class="projects-grid">
+                {projects_html}
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience">
+        <div class="container">
+            <h2>Experience</h2>
+            <div class="exp-grid">
+                {experience_html}
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education">
+        <div class="container">
+            <h2>Education</h2>
+            <div class="edu-grid">
+                {education_html}
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 {p['name']}. Crafted with PortfolioAI</p>
+    </footer>
+</body>
+</html>'''
     
     def _generate_tech_modern(self, p: Dict) -> str:
         """Generate tech modern template"""
