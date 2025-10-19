@@ -67,599 +67,594 @@ class TemplateGenerator:
         return f'''<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{p['name']} - Portfolio</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        
-        * {{
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }}
-        
-        html {{
-            scroll-behavior: smooth;
-        }}
-        
-        body {{
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            line-height: 1.6;
-            color: #1a1a1a;
-            background: #0a0a0a;
-            overflow-x: hidden;
-        }}
-        
-        /* Navigation */
-        nav {{
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            background: rgba(10, 10, 10, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 1.5rem 0;
-        }}
-        
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{p['name']} - Portfolio</title>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    
+    * {{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }}
+    
+    html {{
+        scroll-behavior: smooth;
+    }}
+    
+    body {{
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        line-height: 1.6;
+        color: #1a1a1a;
+        background: #0a0a0a;
+        overflow-x: hidden;
+    }}
+    
+    /* Navigation */
+    nav {{
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        background: rgba(10, 10, 10, 0.95);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 1.5rem 0;
+    }}
+    
+    nav .container {{
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 3rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }}
+    
+    nav .logo {{
+        font-size: 1.5rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }}
+    
+    nav ul {{
+        display: flex;
+        gap: 2rem;
+        list-style: none;
+    }}
+    
+    nav a {{
+        color: #fff;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        opacity: 0.8;
+    }}
+    
+    nav a:hover {{
+        opacity: 1;
+        transform: translateY(-2px);
+    }}
+    
+    /* Hero Section */
+    .hero {{
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+        position: relative;
+        overflow: hidden;
+        padding: 6rem 2rem;
+    }}
+    
+    .hero::before {{
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
+        animation: pulse 8s ease-in-out infinite;
+    }}
+    
+    @keyframes pulse {{
+        0%, 100% {{ transform: scale(1); opacity: 0.5; }}
+        50% {{ transform: scale(1.2); opacity: 0.8; }}
+    }}
+    
+    .hero-content {{
+        text-align: center;
+        position: relative;
+        z-index: 1;
+    }}
+    
+    .hero h1 {{
+        font-size: 5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        letter-spacing: -0.03em;
+        line-height: 1.1;
+        animation: fadeInUp 0.8s ease;
+    }}
+    
+    @keyframes fadeInUp {{
+        from {{ opacity: 0; transform: translateY(30px); }}
+        to {{ opacity: 1; transform: translateY(0); }}
+    }}
+    
+    .hero .title {{
+        font-size: 1.8rem;
+        color: rgba(255, 255, 255, 0.8);
+        font-weight: 400;
+        margin-bottom: 2rem;
+        animation: fadeInUp 0.8s ease 0.2s both;
+    }}
+    
+    .hero .contact {{
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.6);
+        animation: fadeInUp 0.8s ease 0.4s both;
+    }}
+    
+    .hero .contact a {{
+        color: rgba(255, 255, 255, 0.6);
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }}
+    
+    .hero .contact a:hover {{
+        color: #667eea;
+    }}
+    
+    /* Section Styles */
+    section {{
+        padding: 8rem 3rem;
+        position: relative;
+    }}
+    
+    .container {{
+        max-width: 1400px;
+        margin: 0 auto;
+    }}
+    
+    section h2 {{
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 4rem;
+        text-align: center;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }}
+    
+    /* About Section */
+    #about {{
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    }}
+    
+    #about p {{
+        font-size: 1.3rem;
+        line-height: 1.8;
+        color: rgba(255, 255, 255, 0.8);
+        max-width: 900px;
+        margin: 0 auto;
+        text-align: center;
+    }}
+    
+    /* Skills Section */
+    #skills {{
+        background: #0a0a0a;
+    }}
+    
+    .skills-grid {{
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1.5rem;
+        max-width: 1000px;
+        margin: 0 auto;
+    }}
+    
+    .skill-tag {{
+        padding: 1.5rem;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        border: 1px solid rgba(102, 126, 234, 0.3);
+        border-radius: 12px;
+        text-align: center;
+        font-weight: 500;
+        color: #fff;
+        transition: all 0.3s ease;
+        cursor: default;
+    }}
+    
+    .skill-tag:hover {{
+        transform: translateY(-5px);
+        border-color: #667eea;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    }}
+    
+    /* Projects Section */
+    #projects {{
+        background: linear-gradient(135deg, #16213e 0%, #0f3460 100%);
+    }}
+    
+    .projects-grid {{
+        display: grid;
+        gap: 3rem;
+        max-width: 1000px;
+        margin: 0 auto;
+    }}
+    
+    .project-card {{
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 3rem;
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+    }}
+    
+    .project-card::before {{
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        transform: scaleX(0);
+        transition: transform 0.4s ease;
+    }}
+    
+    .project-card:hover::before {{
+        transform: scaleX(1);
+    }}
+    
+    .project-card:hover {{
+        transform: translateY(-10px);
+        border-color: rgba(102, 126, 234, 0.5);
+        box-shadow: 0 20px 60px rgba(102, 126, 234, 0.2);
+    }}
+    
+    .project-number {{
+        font-size: 3rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 1rem;
+    }}
+    
+    .project-card h3 {{
+        font-size: 1.8rem;
+        color: #fff;
+        margin-bottom: 1rem;
+    }}
+    
+    .project-card p {{
+        color: rgba(255, 255, 255, 0.7);
+        margin-bottom: 1.5rem;
+        line-height: 1.8;
+    }}
+    
+    .tech-tags {{
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+    }}
+    
+    .tech-tags span {{
+        padding: 0.5rem 1rem;
+        background: rgba(102, 126, 234, 0.2);
+        border-radius: 20px;
+        font-size: 0.85rem;
+        color: #667eea;
+    }}
+    
+    .project-link {{
+        display: inline-block;
+        color: #667eea;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }}
+    
+    .project-link:hover {{
+        transform: translateX(5px);
+    }}
+    
+    /* Experience Section */
+    #experience {{
+        background: #0a0a0a;
+    }}
+    
+    .timeline {{
+        max-width: 900px;
+        margin: 0 auto;
+        position: relative;
+    }}
+    
+    .timeline::before {{
+        content: '';
+        position: absolute;
+        left: 20px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+    }}
+    
+    .timeline-item {{
+        position: relative;
+        padding-left: 60px;
+        margin-bottom: 4rem;
+    }}
+    
+    .timeline-dot {{
+        position: absolute;
+        left: 10px;
+        top: 0;
+        width: 20px;
+        height: 20px;
+        background: #667eea;
+        border: 4px solid #0a0a0a;
+        border-radius: 50%;
+    }}
+    
+    .timeline-content {{
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        padding: 2rem;
+        transition: all 0.3s ease;
+    }}
+    
+    .timeline-content:hover {{
+        transform: translateX(10px);
+        border-color: rgba(102, 126, 234, 0.5);
+    }}
+    
+    .timeline-content .duration {{
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        background: rgba(102, 126, 234, 0.2);
+        border-radius: 20px;
+        font-size: 0.85rem;
+        color: #667eea;
+        margin-bottom: 1rem;
+    }}
+    
+    .timeline-content h3 {{
+        font-size: 1.5rem;
+        color: #fff;
+        margin-bottom: 0.5rem;
+    }}
+    
+    .timeline-content h4 {{
+        font-size: 1.1rem;
+        color: rgba(255, 255, 255, 0.6);
+        font-weight: 500;
+        margin-bottom: 1rem;
+    }}
+    
+    .timeline-content p {{
+        color: rgba(255, 255, 255, 0.7);
+        line-height: 1.8;
+    }}
+    
+    /* Education Section */
+    #education {{
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    }}
+    
+    .edu-grid {{
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 2rem;
+        max-width: 1000px;
+        margin: 0 auto;
+    }}
+    
+    .edu-card {{
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 2.5rem;
+        transition: all 0.3s ease;
+        display: flex;
+        gap: 1.5rem;
+    }}
+    
+    .edu-card:hover {{
+        transform: translateY(-5px);
+        border-color: rgba(102, 126, 234, 0.5);
+        box-shadow: 0 15px 40px rgba(102, 126, 234, 0.2);
+    }}
+    
+    .edu-icon {{
+        font-size: 3rem;
+        flex-shrink: 0;
+    }}
+    
+    .edu-content h3 {{
+        font-size: 1.3rem;
+        color: #fff;
+        margin-bottom: 0.5rem;
+    }}
+    
+    .edu-content h4 {{
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.6);
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+    }}
+    
+    .edu-content .year {{
+        display: inline-block;
+        padding: 0.3rem 0.8rem;
+        background: rgba(102, 126, 234, 0.2);
+        border-radius: 15px;
+        font-size: 0.85rem;
+        color: #667eea;
+        margin-bottom: 1rem;
+    }}
+    
+    .edu-content p {{
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }}
+    
+    /* Footer */
+    footer {{
+        background: #0a0a0a;
+        text-align: center;
+        padding: 3rem 2rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }}
+    
+    footer p {{
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 0.95rem;
+    }}
+    
+    /* Responsive */
+    @media (max-width: 768px) {{
         nav .container {{
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 3rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }}
-        
-        nav .logo {{
-            font-size: 1.5rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            padding: 0 1.5rem;
         }}
         
         nav ul {{
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-        }}
-        
-        nav a {{
-            color: #fff;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-            opacity: 0.8;
-        }}
-        
-        nav a:hover {{
-            opacity: 1;
-            transform: translateY(-2px);
-        }}
-        
-        /* Hero Section */
-        .hero {{
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
-            position: relative;
-            overflow: hidden;
-            padding: 6rem 2rem;
-        }}
-        
-        .hero::before {{
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
-            animation: pulse 8s ease-in-out infinite;
-        }}
-        
-        @keyframes pulse {{
-            0%, 100% {{ transform: scale(1); opacity: 0.5; }}
-            50% {{ transform: scale(1.2); opacity: 0.8; }}
-        }}
-        
-        .hero-content {{
-            text-align: center;
-            position: relative;
-            z-index: 1;
+            gap: 1rem;
         }}
         
         .hero h1 {{
-            font-size: 5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: -0.03em;
-            line-height: 1.1;
-            animation: fadeInUp 0.8s ease;
-        }}
-        
-        @keyframes fadeInUp {{
-            from {{ opacity: 0; transform: translateY(30px); }}
-            to {{ opacity: 1; transform: translateY(0); }}
+            font-size: 3rem;
         }}
         
         .hero .title {{
-            font-size: 1.8rem;
-            color: rgba(255, 255, 255, 0.8);
-            font-weight: 400;
-            margin-bottom: 2rem;
-            animation: fadeInUp 0.8s ease 0.2s both;
+            font-size: 1.3rem;
         }}
         
         .hero .contact {{
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            font-size: 1rem;
-            color: rgba(255, 255, 255, 0.6);
-            animation: fadeInUp 0.8s ease 0.4s both;
+            flex-direction: column;
+            gap: 0.5rem;
         }}
         
-        .hero .contact a {{
-            color: rgba(255, 255, 255, 0.6);
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }}
-        
-        .hero .contact a:hover {{
-            color: #667eea;
-        }}
-        
-        /* Section Styles */
         section {{
-            padding: 8rem 3rem;
-            position: relative;
-        }}
-        
-        .container {{
-            max-width: 1400px;
-            margin: 0 auto;
+            padding: 5rem 1.5rem;
         }}
         
         section h2 {{
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 4rem;
-            text-align: center;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }}
-        
-        /* About Section */
-        #about {{
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-        }}
-        
-        #about p {{
-            font-size: 1.3rem;
-            line-height: 1.8;
-            color: rgba(255, 255, 255, 0.8);
-            max-width: 900px;
-            margin: 0 auto;
-            text-align: center;
-        }}
-        
-        /* Skills Section */
-        #skills {{
-            background: #0a0a0a;
-        }}
-        
-        .skills-grid {{
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1.5rem;
-            max-width: 1000px;
-            margin: 0 auto;
-        }}
-        
-        .skill-tag {{
-            padding: 1.5rem;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-            border: 1px solid rgba(102, 126, 234, 0.3);
-            border-radius: 12px;
-            text-align: center;
-            font-weight: 500;
-            color: #fff;
-            transition: all 0.3s ease;
-            cursor: default;
-        }}
-        
-        .skill-tag:hover {{
-            transform: translateY(-5px);
-            border-color: #667eea;
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
-        }}
-        
-        /* Projects Section */
-        #projects {{
-            background: linear-gradient(135deg, #16213e 0%, #0f3460 100%);
-        }}
-        
-        .projects-grid {{
-            display: grid;
-            gap: 3rem;
-            max-width: 1000px;
-            margin: 0 auto;
-        }}
-        
-        .project-card {{
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 3rem;
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-        }}
-        
-        .project-card::before {{
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-            transform: scaleX(0);
-            transition: transform 0.4s ease;
-        }}
-        
-        .project-card:hover::before {{
-            transform: scaleX(1);
-        }}
-        
-        .project-card:hover {{
-            transform: translateY(-10px);
-            border-color: rgba(102, 126, 234, 0.5);
-            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.2);
-        }}
-        
-        .project-number {{
-            font-size: 3rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 1rem;
-        }}
-        
-        .project-card h3 {{
-            font-size: 1.8rem;
-            color: #fff;
-            margin-bottom: 1rem;
-        }}
-        
-        .project-card p {{
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 1.5rem;
-            line-height: 1.8;
-        }}
-        
-        .tech-tags {{
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-        }}
-        
-        .tech-tags span {{
-            padding: 0.5rem 1rem;
-            background: rgba(102, 126, 234, 0.2);
-            border-radius: 20px;
-            font-size: 0.85rem;
-            color: #667eea;
-        }}
-        
-        .project-link {{
-            display: inline-block;
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }}
-        
-        .project-link:hover {{
-            transform: translateX(5px);
-        }}
-        
-        /* Experience Section */
-        #experience {{
-            background: #0a0a0a;
-        }}
-        
-        .timeline {{
-            max-width: 900px;
-            margin: 0 auto;
-            position: relative;
-        }}
-        
-        .timeline::before {{
-            content: '';
-            position: absolute;
-            left: 20px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
-        }}
-        
-        .timeline-item {{
-            position: relative;
-            padding-left: 60px;
-            margin-bottom: 4rem;
-        }}
-        
-        .timeline-dot {{
-            position: absolute;
-            left: 10px;
-            top: 0;
-            width: 20px;
-            height: 20px;
-            background: #667eea;
-            border: 4px solid #0a0a0a;
-            border-radius: 50%;
-        }}
-        
-        .timeline-content {{
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 2rem;
-            transition: all 0.3s ease;
-        }}
-        
-        .timeline-content:hover {{
-            transform: translateX(10px);
-            border-color: rgba(102, 126, 234, 0.5);
-        }}
-        
-        .timeline-content .duration {{
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background: rgba(102, 126, 234, 0.2);
-            border-radius: 20px;
-            font-size: 0.85rem;
-            color: #667eea;
-            margin-bottom: 1rem;
-        }}
-        
-        .timeline-content h3 {{
-            font-size: 1.5rem;
-            color: #fff;
-            margin-bottom: 0.5rem;
-        }}
-        
-        .timeline-content h4 {{
-            font-size: 1.1rem;
-            color: rgba(255, 255, 255, 0.6);
-            font-weight: 500;
-            margin-bottom: 1rem;
-        }}
-        
-        .timeline-content p {{
-            color: rgba(255, 255, 255, 0.7);
-            line-height: 1.8;
-        }}
-        
-        /* Education Section */
-        #education {{
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            font-size: 2rem;
         }}
         
         .edu-grid {{
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-            max-width: 1000px;
-            margin: 0 auto;
+            grid-template-columns: 1fr;
         }}
         
-        .edu-card {{
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 2.5rem;
-            transition: all 0.3s ease;
-            display: flex;
-            gap: 1.5rem;
+        .timeline::before {{
+            left: 15px;
         }}
         
-        .edu-card:hover {{
-            transform: translateY(-5px);
-            border-color: rgba(102, 126, 234, 0.5);
-            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.2);
+        .timeline-dot {{
+            left: 5px;
         }}
-        
-        .edu-icon {{
-            font-size: 3rem;
-            flex-shrink: 0;
-        }}
-        
-        .edu-content h3 {{
-            font-size: 1.3rem;
-            color: #fff;
-            margin-bottom: 0.5rem;
-        }}
-        
-        .edu-content h4 {{
-            font-size: 1rem;
-            color: rgba(255, 255, 255, 0.6);
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-        }}
-        
-        .edu-content .year {{
-            display: inline-block;
-            padding: 0.3rem 0.8rem;
-            background: rgba(102, 126, 234, 0.2);
-            border-radius: 15px;
-            font-size: 0.85rem;
-            color: #667eea;
-            margin-bottom: 1rem;
-        }}
-        
-        .edu-content p {{
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }}
-        
-        /* Footer */
-        footer {{
-            background: #0a0a0a;
-            text-align: center;
-            padding: 3rem 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }}
-        
-        footer p {{
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 0.95rem;
-        }}
-        
-        /* Responsive */
-        @media (max-width: 768px) {{
-            nav .container {{
-                padding: 0 1.5rem;
-            }}
-            
-            nav ul {{
-                gap: 1rem;
-            }}
-            
-            .hero h1 {{
-                font-size: 3rem;
-            }}
-            
-            .hero .title {{
-                font-size: 1.3rem;
-            }}
-            
-            .hero .contact {{
-                flex-direction: column;
-                gap: 0.5rem;
-            }}
-            
-            section {{
-                padding: 5rem 1.5rem;
-            }}
-            
-            section h2 {{
-                font-size: 2rem;
-            }}
-            
-            .edu-grid {{
-                grid-template-columns: 1fr;
-            }}
-            
-            .timeline::before {{
-                left: 15px;
-            }}
-            
-            .timeline-dot {{
-                left: 5px;
-            }}
-        }}
-    </style>
+    }}
+</style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav>
-        <div class="container">
-            <div class="logo">{p['name'][:2].upper()}</div>
-            <ul>
-                <li><a href="#about">About</a></li>
-                <li><a href="#skills">Skills</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#experience">Experience</a></li>
-                <li><a href="#education">Education</a></li>
-            </ul>
-        </div>
-    </nav>
+<!-- Navigation -->
+<nav>
+<div class="container">
+<div class="logo">{p['name'][:2].upper()}</div>
+<ul>
+<li><a href="#about">About</a></li>
+<li><a href="#skills">Skills</a></li>
+<li><a href="#projects">Projects</a></li>
+<li><a href="#experience">Experience</a></li>
+<li><a href="#education">Education</a></li>
+</ul>
+</div>
+</nav>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1>{p['name']}</h1>
-            <p class="title">{p['title']}</p>
-            <div class="contact">
-                <a href="mailto:{p['email']}">{p['email']}</a>
-                {f'<span>•</span><a href="tel:{p["phone"]}">{p["phone"]}</a>' if p.get('phone') else ''}
-            </div>
-        </div>
-    </section>
+<!-- Hero Section -->
+<section class="hero">
+<div class="hero-content">
+<h1>{p['name']}</h1>
+<p class="title">{p['title']}</p>
+<div class="contact">
+<a href="mailto:{p['email']}">{p['email']}</a>
+{f'<span>•</span><a href="tel:{p["phone"]}">{p["phone"]}</a>' if p.get('phone') else ''}
+</div>
+</div>
+</section>
 
-    <!-- About Section -->
-    <section id="about">
-        <div class="container">
-            <h2>About Me</h2>
-            <p>{p['about']}</p>
-        </div>
-    </section>
-
-    <!-- Skills Section -->
-    <section id="skills">
-        <div class="container">
-            <h2>Skills & Expertise</h2>
-            <div class="skills-grid">
-                {skills_html}
-            </div>
-        </div>
-    </section>
-
-    <!-- Projects Section -->
-    <section id="projects">
-        <div class="container">
-            <h2>Featured Projects</h2>
-            <div class="projects-grid">
-                {projects_html}
-            </div>
-        </div>
-    </section>
-
-    <!-- Experience Section -->
-    <section id="experience">
-        <div class="container">
-            <h2>Work Experience</h2>
-            <div class="timeline">
-                {experience_html}
-            </div>
-        </div>
-    </section>
-
-    <!-- Education Section -->
-    <section id="education">
-        <div class="container">
-            <h2>Education</h2>
-            <div class="edu-grid">
-                {education_html}
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <p>© 2025 {p['name']}. Built with PortfolioAI</p>
-    </footer>
+<!-- About Section -->
+<section id="about">
+<div class="container">
+<h2>About Me</h2>
+<p>{p['about']}</p>
+</div>
+</section>
+<!-- Skills Section -->
+<section id="skills">
+<div class="container">
+<h2>Skills & Expertise</h2>
+<div class="skills-grid">
+{skills_html}
+</div>
+</div>
+</section>
+<!-- Projects Section -->
+<section id="projects">
+<div class="container">
+<h2>Featured Projects</h2>
+<div class="projects-grid">
+{projects_html}
+</div>
+</div>
+</section>
+<!-- Experience Section -->
+<section id="experience">
+<div class="container">
+<h2>Work Experience</h2>
+<div class="timeline">
+{experience_html}
+</div>
+</div>
+</section>
+<!-- Education Section -->
+<section id="education">
+<div class="container">
+<h2>Education</h2>
+<div class="edu-grid">
+{education_html}
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer>
+<p>© 2025 {p['name']}. Built with PortfolioAI</p>
+</footer>
 </body>
 </html>'''
     
